@@ -1,15 +1,11 @@
-package dev.wako.repositories;
+package dev.wako.services;
 
 import dev.wako.entities.Employee;
+
 import java.util.List;
 
-public interface EmployeeDAO {
-
-    //for non concrete methods, interface with database
-
-    //create
+public interface EmployeeService {
     Employee createEmployee(Employee employee);
-    //Ticket createTicket(Ticket ticket);
 
     //read
     Employee getEmployeeById(int id);
@@ -18,11 +14,10 @@ public interface EmployeeDAO {
     //update
     Employee updateEmployee(Employee employee);
 
-
     //delete
     boolean deleteEmployeeById(int id);
 
-    public List<Employee> getAllEmployeesOfNames(String username);
+    Employee loginEmployee(Employee employee);
 
-
+    List<Employee> getAllEmployeesOfNames(String username);
 }
