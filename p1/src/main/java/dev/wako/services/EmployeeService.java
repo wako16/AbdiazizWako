@@ -19,5 +19,4 @@ public interface EmployeeService {
 
     Employee loginEmployee(Employee employee);
 
-    List<Employee> getAllEmployeesOfNames(String username);
 }

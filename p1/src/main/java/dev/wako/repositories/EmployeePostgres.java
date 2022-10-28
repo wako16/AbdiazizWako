@@ -6,7 +6,7 @@ import dev.wako.util.ConnectionFactory;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+//password match / mismtch accpection
 
 public class EmployeePostgres implements EmployeeDAO{
 
@@ -17,7 +17,7 @@ public class EmployeePostgres implements EmployeeDAO{
             // I recommend putting in comments the SQL command you are trying to execute
             //INSERT INTO books VALUES (DEFAULT, 'Great Gatsby', 'F. Scott Fitts Jerald', 0);
             System.out.println("ATTEMPTING TO INSERT NEW EMPLOYEE...");
-            String sql = "insert into employees values(default, ?, ? , ?)";
+            String sql = "insert into employee values(default, ?, ? , ?)";
             // The only thing in the sql String that isnt "just a string" are the question marks
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             //Parameters START at 1, they are not indexed at 0
@@ -41,7 +41,7 @@ public class EmployeePostgres implements EmployeeDAO{
     @Override
     public Employee getEmployeeById(int id) {
         try (Connection connection = ConnectionFactory.getConnection()) {
-            String sql = "select * from employees where id = ?";
+            String sql = "select * from employee where id = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             // The class PreparedStatement has a method called prepareStatement (no d) that takes in a string
             ps.setInt(1, id);
@@ -66,7 +66,7 @@ public class EmployeePostgres implements EmployeeDAO{
     @Override
     public List<Employee> getAllEmployees() {
         try (Connection connection = ConnectionFactory.getConnection()) {
-            String sql = "select * from employees";
+            String sql = "select * from employee";
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -91,27 +91,24 @@ public class EmployeePostgres implements EmployeeDAO{
         }
     }
     @Override
-    public List<Employee> getAllEmployeesOfNames(String username) {
+    public Employee getEmployeeByUsername(String username) {
         try (Connection connection = ConnectionFactory.getConnection()) {
-            String sql = "select * from employees where username = ? ";
+            String sql = "select * from employee where username = ? ";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, username);
 
             ResultSet rs = ps.executeQuery();
+            rs.next();
 
-            List<Employee> employeeList = new ArrayList<>();
 
-            while (rs.next()) {
+            Employee employee = new Employee();
+            employee.setId(rs.getInt("id"));
+            employee.setUsername(rs.getString("username"));
+            employee.setPassword(rs.getString("passwd"));
+            employee.setAdmin(rs.getBoolean("isAdmin"));
 
-                Employee employee = new Employee();
-                employee.setId(rs.getInt("id"));
-                employee.setUsername(rs.getString("username"));
-                employee.setPassword(rs.getString("password"));
-                employee.setAdmin(rs.getBoolean("isAdmin"));
-                employeeList.add(employee);
-            }
+            return employee;
 
-            return employeeList;
 
 
         } catch (SQLException e) {
@@ -119,13 +116,15 @@ public class EmployeePostgres implements EmployeeDAO{
             return null;
         }
     }
+
+
     //another function modifying get employees of names
 
     @Override
     public Employee updateEmployee(Employee employee) {
         try(Connection connection = ConnectionFactory.getConnection()){
             //UPDATE books SET title = 'It Ends with Us', author = 'Colleen Hoover' WHERE id = 2;
-            String sql = "update employees set username=?, password=?, isManager=? where id=?";
+            String sql = "update employee set username=?, password=?, isManager=? where id=?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -147,7 +146,7 @@ public class EmployeePostgres implements EmployeeDAO{
     @Override
     public boolean deleteEmployeeById(int id) {
         try (Connection connection = ConnectionFactory.getConnection()) {
-            String sql = "delete from employees where id = ?";
+            String sql = "delete from employee where id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setInt(1, id);
@@ -160,7 +159,7 @@ public class EmployeePostgres implements EmployeeDAO{
             e.printStackTrace();
             return false;
         }
-
+//list vs set hashmap, static,  wrapper
 
     }
 }

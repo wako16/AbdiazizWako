@@ -1,6 +1,5 @@
 package dev.wako.services;
 
-import dev.wako.driver.Driver;
 import dev.wako.entities.Employee;
 import dev.wako.repositories.EmployeeDAO;
 
@@ -18,26 +17,27 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public Employee createEmployee(Employee employee) {
 
-        return null;
+        if(employee.getUsername().length() == 0){
+            throw new RuntimeException("Username cannot be empty");
+        }
+        if(employee.getPassword() == null){
+            throw new RuntimeException("Password cannot be empty");
+        }else {
+            Employee savedEmployee = this.employeeDAO.createEmployee(employee);
+
+            return savedEmployee;
+        }
+
 
     }
 
     @Override
     public Employee loginEmployee(Employee employee) {
-        Employee returnedEmployee = null;
-        List<Employee> employees = Driver.employeeService.getAllEmployeesOfNames(employee.getUsername());
-        for (Employee e : employees){ returnedEmployee = e;
-
-        }
-            return returnedEmployee;
-
+        Employee returnedEmployee =  this.employeeDAO.getEmployeeByUsername(employee.getUsername());
+        return returnedEmployee;
     }
 
-    @Override
-    public List<Employee> getAllEmployeesOfNames(String username) {
-        return this.employeeDAO.getAllEmployeesOfNames(username);
 
-    }
 
 
     @Override

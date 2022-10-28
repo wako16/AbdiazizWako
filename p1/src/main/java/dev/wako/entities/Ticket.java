@@ -1,30 +1,23 @@
 package dev.wako.entities;
 
-public class Ticket {private int id;
-    private String user;
-    private String amount;
+import java.util.Objects;
+
+public class Ticket {
+
+    private int id;
     private String description;
-    private String type;
+    private float amount;
+    private Status status;
 
-    public Ticket() {
+    public Ticket(){
+        this.status =Status.PENDING;
     }
 
-    public Ticket(String user, String amount, String description, String type) {
-        this.user = user;
-        this.amount = amount;
+    public Ticket(int id, String description, float amount, Status status) {
+        this.id = id;
         this.description = description;
-        this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "Ticket{" +
-                "id=" + id +
-                ", user='" + user + '\'' +
-                ", amount='" + amount + '\'' +
-                ", description='" + description + '\'' +
-                ", type='" + type + '\'' +
-                '}';
+        this.amount = amount;
+        this.status = status;
     }
 
     public int getId() {
@@ -35,21 +28,7 @@ public class Ticket {private int id;
         this.id = id;
     }
 
-    public String getUser() {
-        return user;
-    }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
 
     public String getDescription() {
         return description;
@@ -59,12 +38,45 @@ public class Ticket {private int id;
         this.description = description;
     }
 
-    public String getType() {
-        return type;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setAmount(float amount) {
+        this.amount = amount;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", amount=" + amount +
+                ", status=" + status +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return id == ticket.id && Double.compare(ticket.amount, amount) == 0 && Objects.equals(description, ticket.description) && status == ticket.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description, amount, status);
+    }
+
+    public void setid(int id) {
+    }
 }

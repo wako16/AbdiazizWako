@@ -52,7 +52,7 @@ public class EmployeeDAOLocal implements EmployeeDAO{
     }
 
     @Override
-    public List<Employee> getAllEmployeesOfNames(String username) {
+    public Employee getEmployeeByUsername(String username) {
         return null;
     }
 

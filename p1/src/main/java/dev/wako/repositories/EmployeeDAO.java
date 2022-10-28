@@ -22,7 +22,8 @@ public interface EmployeeDAO {
     //delete
     boolean deleteEmployeeById(int id);
 
-    public List<Employee> getAllEmployeesOfNames(String username);
+    public Employee getEmployeeByUsername(String username);
+
 
 
 }

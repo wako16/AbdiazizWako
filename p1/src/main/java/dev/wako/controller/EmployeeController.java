@@ -9,13 +9,18 @@ import java.util.List;
 
 public class EmployeeController {
     public Handler createEmployee = (ctx) ->{
-//        String json = ctx.body();
-//        Gson gson = new Gson();
-//        Employee employee = gson.fromJson(json, Employee.class);
-//        Employee registeredEmployee = Driver.employeeService.createEmployee(employee);
-//        String employeeJson = gson.toJson(registeredEmployee);
-//        ctx.status(201); //This is a status code that will tell us how things went
-//        ctx.result(employeeJson);
+        String json = ctx.body();
+        Gson gson = new Gson();
+        Employee employee = gson.fromJson(json, Employee.class);
+        try{
+            Employee registeredEmployee = Driver.employeeService.createEmployee(employee);
+            String employeeJson = gson.toJson(registeredEmployee);
+            ctx.status(201); //This is a status code that will tell us how things went
+            ctx.result(employeeJson);
+        }catch (RuntimeException e){
+            ctx.status(400);
+            ctx.result(e.getMessage());
+        }
     };
     public Handler loginHandler = (ctx) ->{
         String json = ctx.body();
@@ -38,37 +43,34 @@ public class EmployeeController {
 
         }
 
-        /* String EmployeeJson = gson.toJson(registeredEmployee);
-        ctx.status(201); //This is a status code that will tell us how things went
-        ctx.result(EmployeeJson);
-        */
+
     };
 
-    public Handler getBookByIdHandler = (ctx) ->{
+    public Handler getEmployeeByIdHandler = (ctx) ->{
         int id = Integer.parseInt(ctx.pathParam("id"));//This will take what value was in the {id} and turn it into an int for us to use
         Employee employee = Driver.employeeService.getEmployeeById(id);
         Gson gson = new Gson();
         String json = gson.toJson(employee);
         ctx.result(json);
     };
-    public Handler getAllBooks = (ctx) ->{
+    public Handler getAllEmployees = (ctx) ->{
         List<Employee> books = Driver.employeeService.getAllEmployees();
         Gson gson = new Gson();
         String json = gson.toJson(books);
         ctx.result(json);
     };
 
-    public Handler updateBookHandler = (ctx) ->{
-        String bookJSON = ctx.body();
+    public Handler updateEmployeeHandler = (ctx) ->{
+        String employeeJSON = ctx.body();
         Gson gson = new Gson();
-        Employee book = gson.fromJson(bookJSON, Employee.class);
-        Employee updateEmployee = Driver.employeeService.updateEmployee(book);
+        Employee employee = gson.fromJson(employeeJSON, Employee.class);
+        Employee updateEmployee = Driver.employeeService.updateEmployee(employee);
         String json = gson.toJson(updateEmployee);
         ctx.result(json);
     };
 
 
-    public Handler deleteBookHandler = (ctx) ->{
+    public Handler deleteEmployeeHandler = (ctx) ->{
         int id = Integer.parseInt(ctx.pathParam("id"));
         boolean result = Driver.employeeService.deleteEmployeeById(id);
         if(result){
